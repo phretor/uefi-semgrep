@@ -16,6 +16,10 @@ The idea is not (yet) to find vulnerabilities, but to support manual code review
 - recognize NVRAM variables
 - patterns for common vulnerabilities
 
+## Caveats
+
+- Expect lots of FPs
+- Semgrep C/C++ parser is experimental
 
 ## Related
 
