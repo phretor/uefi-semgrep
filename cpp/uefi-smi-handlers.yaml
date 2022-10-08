@@ -1,0 +1,51 @@
+rules:
+  - id: phretor-uefi-smi-handlers
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+      references:
+        - https://nstarke.github.io/smi/uefi/ghidra/2021/06/25/enumerating-smi-handlers.html
+        - https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Core/PiSmmCore/PiSmmCore.c
+    message: >-
+      SMI handlers are the routines that handle SMM interrupts
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    pattern-either:
+      - patterns:
+        - pattern: $FUN(...)
+        - metavariable-regex:
+            metavariable: $FUN
+            regex: ^[a-zA-Z0-9_]+SmiHandler$
+      - patterns:
+        - pattern: $P->$FUN(...)
+        - metavariable-regex:
+            metavariable: $FUN
+            regex: ^SmmRegister[a-zA-Z0-9_]+$
+      - patterns:
+        - pattern: $P->$FUN(...)
+        - metavariable-regex:
+            metavariable: $FUN
+            regex: ^SmiHandler[a-zA-Z0-9_]+$
+      - patterns:
+        - pattern: $P->$FUN(...)
+        - metavariable-regex:
+            metavariable: $P
+            regex: '^g[a-zA-Z0-9_]+$'
+        - metavariable-pattern:
+            metavariable: $FUN
+            pattern-either:
+              - pattern: SmmAllocatePool
+              - pattern: SmmFreePool
+              - pattern: SmmAllocatePages
+              - pattern: SmmFreePages
+              - pattern: SmmInstallProtocolInterface
+              - pattern: SmmUninstallProtocolInterface
+              - pattern: SmmHandleProtocol
+              - pattern: SmmRegisterProtocolNotify
+              - pattern: SmmLocateHandle
+              - pattern: SmmLocateProtocol
+              - pattern: SmiManage
+              - pattern: SmiHandlerRegister
+              - pattern: SmiHandlerUnRegister

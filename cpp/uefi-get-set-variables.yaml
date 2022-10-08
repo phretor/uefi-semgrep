@@ -1,0 +1,23 @@
+rules:
+  - id: phretor-uefi-get-set-variables
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+      references:
+        - https://www.sentinelone.com/labs/zen-and-the-art-of-smm-bug-hunting-finding-mitigating-and-detecting-uefi-vulnerabilities/
+    message: >-
+      Flows between GetVariable and SetVariable can lead to code injection
+      or data leak from/to NVRAM.
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: |
+          $P->GetVariable($VAR, $GUID, ..., $SIZE1, ...);
+          ...
+          $P->SetVariable($VAR, $GUID, ..., $SIZE2, ...);
+      - pattern-not: |  # delete variable
+          $P->GetVariable($VAR, $GUID, ..., $SIZE1, ...);
+          ...
+          $P->SetVariable($VAR, $GUID, ..., 0, ...);

@@ -1,0 +1,40 @@
+rules:
+  - id: phretor-uefi-pei-services
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+    message: >-
+      Pinpoint UEFI PEI services
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: $P->$FUN(...);
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^g[a-zA-Z0-9_]+$'
+      - metavariable-pattern:
+          metavariable: $FUN
+          patterns:
+          - pattern-either:
+            - pattern: InstallPpi
+            - pattern: ReInstallPpi
+            - pattern: LocatePpi
+            - pattern: NotifyPpi
+            - pattern: GetBootMode
+            - pattern: SetBootMode
+            - pattern: GetHobList
+            - pattern: CreateHob
+            - pattern: FfsFindNextVolume
+            - pattern: FfsFindNextFile
+            - pattern: FfsFindSectionData
+            - pattern: InstallPeiMemory
+            - pattern: AllocatePages
+            - pattern: AllocatePool
+            - pattern: CopyMem
+            - pattern: SetMem
+            - pattern: ReportStatusCode
+            - pattern: ResetSystem
+            - pattern: CpuIo
+            - pattern: PciCfg

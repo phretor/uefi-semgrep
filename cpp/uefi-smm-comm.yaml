@@ -1,0 +1,25 @@
+rules:
+  - id: phretor-uefi-smm-comm
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+      references:
+        - https://uefi.org/sites/default/files/resources/Jiewen%20Yao%20-%20SMM%20Protection%20in%20%20EDKII_Intel.pdf
+        - https://binarly.io/advisories/BRLY-2021-036/index.html
+    message: >-
+      SMM communication is one of the main attack surfaces
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: $FUN(...)
+      - metavariable-pattern:
+          metavariable: $FUN
+          patterns:
+          - pattern-either:
+            - pattern: SmmIsBufferOutsideSmmValid
+            - pattern: SmmCopyMemToSmram
+            - pattern: SmmCopyMemFromSmram
+            - pattern: CopyMem
+            - pattern: ReadSaveState

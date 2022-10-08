@@ -1,0 +1,33 @@
+rules:
+  - id: phretor-uefi-protocols
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+    message: >-
+      Pinpoint UEFI protocols
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: $P->$FUN(...);
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^g[a-zA-Z0-9_]+$'
+      - metavariable-pattern:
+          metavariable: $FUN
+          patterns:
+            - pattern-either:
+                - pattern: InstallProtocolInterface
+                - pattern: ReinstallProtocolInterface
+                - pattern: UninstallProtocolInterface
+                - pattern: HandleProtocol
+                - pattern: RegisterProtocolNotify
+                - pattern: OpenProtocol
+                - pattern: CloseProtocol
+                - pattern: OpenProtocolInformation
+                - pattern: ProtocolsPerHandle
+                - pattern: LocateHandleBuffer
+                - pattern: LocateProtocol
+                - pattern: InstallMultipleProtocolInterfaces
+                - pattern: UninstallMultipleProtocolInterfaces

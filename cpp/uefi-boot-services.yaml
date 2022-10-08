@@ -1,0 +1,64 @@
+rules:
+  - id: phretor-uefi-boot-services
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+    message: >-
+      Pinpoint UEFI boot services
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: $P->$FUN(...);
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^g[a-zA-Z0-9_]+$'
+      - metavariable-pattern:
+          metavariable: $FUN
+          patterns:
+          - pattern-either:
+            - pattern: RaiseTPL
+            - pattern: RestoreTPL
+            - pattern: AllocatePages
+            - pattern: FreePages
+            - pattern: GetMemoryMap
+            - pattern: AllocatePool
+            - pattern: FreePool
+            - pattern: CreateEvent
+            - pattern: SetTimer
+            - pattern: WaitForEvent
+            - pattern: SignalEvent
+            - pattern: CloseEvent
+            - pattern: CheckEvent
+            - pattern: InstallProtocolInterface
+            - pattern: ReinstallProtocolInterface
+            - pattern: UninstallProtocolInterface
+            - pattern: HandleProtocol
+            - pattern: Reserved
+            - pattern: RegisterProtocolNotify
+            - pattern: LocateHandle
+            - pattern: LocateDevicePath
+            - pattern: InstallConfigurationTable
+            - pattern: LoadImage
+            - pattern: StartImage
+            - pattern: Exit
+            - pattern: UnloadImage
+            - pattern: ExitBootServices
+            - pattern: GetNextMonotonicCount
+            - pattern: Stall
+            - pattern: SetWatchdogTimer
+            - pattern: ConnectController
+            - pattern: DisconnectController
+            - pattern: OpenProtocol
+            - pattern: CloseProtocol
+            - pattern: OpenProtocolInformation
+            - pattern: ProtocolsPerHandle
+            - pattern: LocateHandleBuffer
+            - pattern: LocateProtocol
+            - pattern: InstallMultipleProtocolInterfaces
+            - pattern: UninstallMultipleProtocolInterfaces
+            - pattern: CalculateCrc32
+            - pattern: CopyMem
+            - pattern: SetMem
+            - pattern: CreateEventEx

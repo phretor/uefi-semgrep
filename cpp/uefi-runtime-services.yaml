@@ -1,0 +1,34 @@
+rules:
+  - id: phretor-uefi-runtime-services
+    metadata:
+      author: Federico Maggi <fede@maggi.cc
+      confidence: LOW
+    message: >-
+      Pinpoint UEFI runtime services
+    severity: INFO
+    languages:
+      - c
+      - cpp
+    patterns:
+      - pattern: $P->$FUN(...);
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^g[a-zA-Z0-9_]+$'
+      - metavariable-pattern:
+          metavariable: $FUN
+          patterns:
+          - pattern-either:
+            - pattern: GetTime
+            - pattern: SetTime
+            - pattern: GetWakeupTime
+            - pattern: SetWakeupTime
+            - pattern: SetVirtualAddressMap
+            - pattern: ConvertPointer
+            - pattern: GetVariable
+            - pattern: GetNextVariableName
+            - pattern: SetVariable
+            - pattern: GetNextHighMonotonicCount
+            - pattern: ResetSystem
+            - pattern: UpdateCapsule
+            - pattern: QueryCapsuleCapabilities
+            - pattern: QueryVariableInfo
